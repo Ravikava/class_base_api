@@ -6,3 +6,7 @@ from .models import *
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ['id','emp_name', 'emp_id', 'emp_age', 'emp_add']
+    
+@admin.register(Student)
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ['id','name','roll','city']

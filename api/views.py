@@ -4,9 +4,11 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin
 
 from .models import *
-from .serializers import EmployeeSerializer
+from .serializers import EmployeeSerializer,StudentSerializer
 
 class EmployeeApi(APIView):
     def get(self, request, pk=None, format=None):
@@ -51,3 +53,27 @@ class EmployeeApi(APIView):
         emp = Employee.objects.get(pk = id)
         emp.delete()
         return Response({'msg':"Data Delete Succesfully"})
+    
+class StudentList(GenericAPIView, ListModelMixin, CreateModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class StudentListUpdate(GenericAPIView, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request,*args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    
